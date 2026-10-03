@@ -19,9 +19,51 @@
 //       valorInventario: 135000, agotados: ["Capuchino"] }
 // ============================================================
 
+function calcularInventario(productos){
+  let inventario = crearInventario();
+  for (let producto of productos){
+    inventario.totalProductos = calcularTotalProductos(inventario.totalProductos, producto);
+    inventario.unidadesTotales = calcularUnidadesTotales(inventario.unidadesTotales, producto);
+    inventario.valorInventario = calcularValorInventario(inventario.valorInventario, producto);
+    inventario.agotados = isAvailable(inventario.agotados, producto); 
+  }
+
+  return inventario;
+}
+
 function resumenInventario(productos) {
-  // Tu código aquí
+  return calcularInventario(productos);
+}
+
+function calcularTotalProductos(totalProductos){
+    return totalProductos+= 1;
+}
+
+function isAvailable(agotados, producto){
+    if(producto.stock == 0){
+      agotados.push(producto.nombre);
+    }
+  return agotados;
+}
+
+function calcularUnidadesTotales(unidadesTotales, producto){
+  return  unidadesTotales += producto.stock;
+}
+
+function calcularValorInventario(valorInventario, producto){
+    valorInventario += producto.stock*producto.precio;
+  return valorInventario;
+}
+
+function crearInventario(){
+  let inventario = {
+    totalProductos: 0,
+    unidadesTotales:0,
+    valorInventario:0,
+    agotados:[]
+  }
+  return inventario;
 }
 
 // No borres esta línea: es la puerta por donde el test usa tu función
-module.exports = { resumenInventario };
+module.exports = { resumenInventario }; 
